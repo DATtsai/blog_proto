@@ -1,8 +1,8 @@
 <% extend('./layout/layout') %> 
 <div class="hex-blog">
   <nav class="breadcrumb pl-0">
-    <a class="breadcrumb-item text-primary" href="#">Home</a>
-    <a class="breadcrumb-item text-primary" href="#">
+    <a class="breadcrumb-item text-primary" href="/">Home</a>
+    <a class="breadcrumb-item text-primary" href="/category/<%- article.category %> ">
       <%- categories[article.category].name %> 
     </a>
     <span class="breadcrumb-item active"><%- article.title %></span>

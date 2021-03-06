@@ -72,6 +72,29 @@ router.get('/', function(req, res, next) {
     })
 });
 
+router.get('/category/:category', function(req, res) {
+  let category = req.params.category;
+  let currentPage = Number.parseInt(req.query.page) || 1;
+  categoriesRef.once('value')
+  .then(function(snapshot) {
+    categories = snapshot.val();
+    return articlesRef.orderByChild('update_time').once('value')
+  })
+  .then(function(snapshot) {
+    let articles = [];
+    snapshot.forEach((item) => {
+      if(item.val().category === category && item.val().status === 'public'){
+        articles.push(item.val());
+      }
+    })
+    articles.reverse();
+    let data = convertPagination(articles, currentPage);
+    let articlesDisplay = data.articlesDisplay;
+    let page = data.page; 
+    res.render('index', { categories, articles: articlesDisplay, page, moment, striptags })
+  })
+});
+
 router.get('/post/:id', function(req, res) {
   let id = req.params.id;
   let categories = {};
@@ -87,10 +110,6 @@ router.get('/post/:id', function(req, res) {
       } 
       res.render('post', { categories, article, moment })
     })
-});
-
-router.get('/dashboard/signup', function(req, res) {
-  res.render('dashboard/signup');
 });
 
 module.exports = router;
