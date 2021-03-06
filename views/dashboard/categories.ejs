@@ -1,0 +1,59 @@
+<% extend('../layout/dashboard-layout') %> 
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <!-- 路由處理訊息回傳判斷 -->
+    <% if(hasInfo) { %>
+      <% for(let key in message) { %>
+        <div class="alert alert-warning">
+          <%- message[key] %>
+        </div>
+      <% } %>  
+    <% } %> 
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>名稱</th>
+          <th>路徑</th>
+          <th width="30"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 資料呈現處理 -->
+        <% for(let key in categories) { %> 
+          <tr>
+            <td class="align-middle"><%- categories[key].name %> </td>
+            <td><input type="text" class="form-control form-control-sm" value="<%- categories[key].path %> "></td>
+            <td class="align-middle">
+              <!-- 刪除路由變數處理 -->
+              <form action="/dashboard/category.delete?id=<%- key %>" method="POST">
+                <button type="submit" class="btn btn-outline-danger btn-sm">刪除</button>
+              </form>
+            </td>
+          </tr>
+        <% } %> 
+      </tbody>
+    </table>
+    <!-- 新增功能 -->
+    <form action="/dashboard/category.create" method="POST">
+      <table class="table">
+        <tr>
+          <td class="align-middle">新增</td>
+          <td>
+            <label for="name">分類名稱</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="請輸入分類名稱">
+          </td>
+          <td colspan="2">
+            <label for="path">路徑</label>
+            <input type="text" class="form-control" id="path" name="path" placeholder="請輸入分類路徑">
+          </td>
+        </tr>
+      </table>
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary">更新資訊</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
