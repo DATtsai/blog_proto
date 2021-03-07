@@ -73,17 +73,23 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/category/:category', function(req, res) {
-  let category = req.params.category;
+  let categoryPath = req.params.category;
+  let categoryID;
   let currentPage = Number.parseInt(req.query.page) || 1;
   categoriesRef.once('value')
   .then(function(snapshot) {
+    snapshot.forEach((item) => {
+      if(item.val().path === categoryPath) {
+        categoryID = item.val().id;
+      }
+    });
     categories = snapshot.val();
     return articlesRef.orderByChild('update_time').once('value')
   })
   .then(function(snapshot) {
     let articles = [];
     snapshot.forEach((item) => {
-      if(item.val().category === category && item.val().status === 'public'){
+      if(item.val().category === categoryID && item.val().status === 'public'){
         articles.push(item.val());
       }
     })
