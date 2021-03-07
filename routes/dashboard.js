@@ -134,6 +134,17 @@ router.post('/category.create', function(req, res) {
         })
 });
 
+router.post('/category.update', function(req, res) {
+    let id = req.query.id;
+    let data = req.body;
+    console.log(id, data);
+    categoriesRef.child(id).update(data)
+        .then(function() {
+            req.flash('info', '欄位已更新');
+            res.redirect('/dashboard/categories');
+        })
+})
+
 router.post('/category.delete', function(req, res) {
     let id = req.query.id;
     // console.log(id);
