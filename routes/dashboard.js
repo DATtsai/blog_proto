@@ -12,6 +12,8 @@ var firebaseDB = require('../connections/firebase_admin')
 const categoriesRef = firebaseDB.ref('categories');
 const articlesRef = firebaseDB.ref('articles')
 
+var convertPagination = require('../modules/convertPagination');
+
 router.get('/', function(req, res) {
     res.redirect('/dashboard/archives')
 });
@@ -77,6 +79,7 @@ router.post('/article.delete', function(req, res) {
 })
 
 router.get('/archives', function(req, res) {
+    let currentPage = Number.parseInt(req.query.page) || 1;
     let status = req.query.status || 'public';
     let categories = {};
     categoriesRef.once('value')
@@ -93,7 +96,11 @@ router.get('/archives', function(req, res) {
             });
             articles.reverse(); // 調整最新文章在陣列最前面
             // console.log(categories, articles);
-            res.render('dashboard/archives', { categories, articles, status, moment, striptags });
+            let data = convertPagination(articles, currentPage);
+            let articlesDisplay = data.articlesDisplay;
+            let page = data.page; 
+
+            res.render('dashboard/archives', { categories, articles: articlesDisplay, status, page, moment, striptags });
         })
 });
 

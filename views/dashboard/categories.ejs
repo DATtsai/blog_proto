@@ -27,7 +27,7 @@
             <td class="align-middle">
               <!-- 刪除路由變數處理 -->
               <form action="/dashboard/category.delete?id=<%- key %>" method="POST">
-                <button type="submit" class="btn btn-outline-danger btn-sm">刪除</button>
+                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return(confirm('確認刪除該類別？'))">刪除</button>
               </form>
             </td>
           </tr>
@@ -41,11 +41,11 @@
           <td class="align-middle">新增</td>
           <td>
             <label for="name">分類名稱</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="請輸入分類名稱">
+            <input type="text" class="form-control" id="name" name="name" placeholder="請輸入分類名稱" required>
           </td>
           <td colspan="2">
             <label for="path">路徑</label>
-            <input type="text" class="form-control" id="path" name="path" placeholder="請輸入分類路徑">
+            <input type="text" class="form-control" id="path" name="path" placeholder="請輸入分類路徑" required>
           </td>
         </tr>
       </table>

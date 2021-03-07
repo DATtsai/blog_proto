@@ -35,7 +35,7 @@ let authCheck = function(req, res, next) {
   if(req.session.uid === process.env.ADMIN_UID) {
     return next();
   }
-  req.flash('error', '此帳號不具有後台權限');
+  req.flash('error', '未登入或此帳號不具有後台權限');
   return res.redirect('/auth/signin');
 };
 

@@ -1,5 +1,5 @@
 <% extend('../layout/dashboard-layout') %> 
-<% if(article === undefined) { var article = {}; } %> 
+<% if(article === undefined) { var article = {status: 'draft'}; } %> 
 <form
   <% if(article.id) { %>
     action="/dashboard/article.update?id=<%= article.id %> "
@@ -13,7 +13,7 @@
 
     
     <label for="title">請輸入標題</label>
-    <input type="text" id="title" class="form-control" name="title" placeholder="標題" value="<%= article.title || '' %>">
+    <input type="text" id="title" class="form-control" name="title" required placeholder="標題" value="<%= article.title || '' %>">
     <hr>
     <textarea name="content" id="editor" class="form-control">
       <%= article.content || '' %> 
