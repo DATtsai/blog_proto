@@ -16,6 +16,7 @@
           <th>名稱</th>
           <th>路徑</th>
           <th width="30"></th>
+          <th width="30"></th>
         </tr>
       </thead>
       <tbody>
@@ -27,9 +28,9 @@
               <td><input type="text" name="path" class="form-control form-control-sm"  value="<%- categories[key].path %>"></td>
               <td class="align-middle">
               <!-- 更新路由變數處理 -->
-              <button type="submit" class="btn btn-outline-primary btn-sm" onclick="return(confirm('確認更新該類別？'))">更新</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm" onclick="return(confirm('確認更新該類別？'))">更新</button>
+              </td>
             </form>
-            </td>
             <td class="align-middle">
               <!-- 刪除路由變數處理 -->
               <form action="/dashboard/category.delete?id=<%- key %>" method="POST">

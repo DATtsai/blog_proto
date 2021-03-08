@@ -1,0 +1,31 @@
+<% extend('../layout/dashboard-layout') %> 
+<% if(!nickname) { %> 
+    <div class="alert alert-warning">目前您尚未設定作者名稱，請輸入</div>
+<% } %> 
+<form action="/dashboard/admin.update" method="post">
+    <label for="nickname">顯示作者名為</label>
+    <input type="text" name="nickname" class="form-control form-control-sm" value="<%- nickname %>">
+    <input type="submit" class="btn btn-outline-primary btn-sm" value="更換作者名稱">
+    <span>請輸入後更新</span>
+</form>
+<hr>
+<p>目前部落格總計有 <%- publicCount+draftCount %>  篇文章(公開  <%- publicCount %> 篇、草稿 <%- draftCount %> 篇)</p>
+<p>所有文章瀏覽次數為 <%- totalViews %>  次</p>
+<p>各篇瀏覽狀況如下：</p>
+<table class="table">
+    <thead>
+      <tr>
+        <th>標題</th>
+        <th>瀏覽次數</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 資料呈現處理 -->
+      <% for(let key in articles) { %> 
+        <tr>
+            <td class="align-middle"><strong><%- articles[key].title %></strong></td>
+            <td><%- articles[key].views %></td>
+        </tr>
+      <% } %> 
+    </tbody>
+</table>

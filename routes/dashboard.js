@@ -10,12 +10,46 @@ var striptags = require('striptags');
 
 var firebaseDB = require('../connections/firebase_admin')
 const categoriesRef = firebaseDB.ref('categories');
-const articlesRef = firebaseDB.ref('articles')
+const articlesRef = firebaseDB.ref('articles');
+const usersRef = firebaseDB.ref('users');
 
 var convertPagination = require('../modules/convertPagination');
 
 router.get('/', function(req, res) {
-    res.redirect('/dashboard/archives')
+    let articles = [];
+    let totalViews = 0;
+    let publicCount = 0;
+    let draftCount = 0;
+    articlesRef.orderByChild('views').once('value')
+        .then(function(snapshot) {
+            snapshot.forEach((item) => {
+                totalViews+=item.val().views;
+                if(item.val().status === 'public') {
+                    publicCount+=1;
+                }else 
+                if(item.val().status === 'draft') {
+                    draftCount+=1;
+                }
+                articles.push(item.val());
+            })
+            articles.reverse();
+            
+            return usersRef.child(req.session.uid).once('value')
+        })
+        .then(function(snapshot) {
+            let nickname = snapshot.val().nickname;
+            // console.log(totalViews, publicCount, draftCount)
+            res.render('dashboard/admin', { totalViews, articles, publicCount, draftCount, nickname });
+        })
+    // res.redirect('/dashboard/archives')
+});
+
+router.post('/admin.update', function(req, res) {
+    let uid = req.session.uid;
+    let email = req.session.email;
+    let nickname = req.body.nickname;
+    usersRef.child(uid).set({uid, email, nickname});
+    res.redirect('/dashboard/');
 });
 
 router.get('/article/create', function(req, res) {
@@ -35,6 +69,7 @@ router.post('/article.create', function(req, res) {
     let updateTime = Math.floor( Date.now() / 1000 ); // 取得現在時間timestamp
     data.id = key;
     data.update_time = updateTime;
+    data.views = 0;
     // console.log(data);
     articleRef.set(data)
         .then(function() {

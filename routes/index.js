@@ -11,7 +11,8 @@ var striptags = require('striptags');
 
 var firebaseDB = require('../connections/firebase_admin')
 const categoriesRef = firebaseDB.ref('categories');
-const articlesRef = firebaseDB.ref('articles')
+const articlesRef = firebaseDB.ref('articles');
+const usersRef = firebaseDB.ref('users');
 
 var convertPagination = require('../modules/convertPagination');
 
@@ -104,17 +105,24 @@ router.get('/category/:category', function(req, res) {
 router.get('/post/:id', function(req, res) {
   let id = req.params.id;
   let categories = {};
+  let author = '';
   categoriesRef.once('value')
     .then(function(snapshot) {
       categories = snapshot.val();
+      return usersRef.child(process.env.ADMIN_UID).once('value')
+    })
+    .then(function(snapshot) {
+      author = snapshot.val().nickname;
       return articlesRef.child(id).once('value')
     })
     .then(function(snapshot) {
       let article = snapshot.val();
       if(!article) {
         return res.render('error', { title: 'oops！找不到該文章!'});
-      } 
-      res.render('post', { categories, article, moment })
+      }
+      article.views+=1; 
+      articlesRef.child(id).update(article);
+      res.render('post', { categories, article, moment, author })
     })
 });
 
