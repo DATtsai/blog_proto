@@ -73,7 +73,7 @@ router.post('/article.create', function(req, res) {
     // console.log(data);
     articleRef.set(data)
         .then(function() {
-            res.redirect(`/dashboard/article/${key}`);
+            res.redirect(`/dashboard/archives`);
         })
 });
 
