@@ -105,14 +105,16 @@ router.get('/category/:category', function(req, res) {
 router.get('/post/:id', function(req, res) {
   let id = req.params.id;
   let categories = {};
-  let author = '';
+  let author = 'DAT';
   categoriesRef.once('value')
     .then(function(snapshot) {
       categories = snapshot.val();
       return usersRef.child(process.env.ADMIN_UID).once('value')
     })
     .then(function(snapshot) {
-      author = snapshot.val().nickname;
+      if(snapshot.val()){
+        author = snapshot.val().nickname;
+      }
       return articlesRef.child(id).once('value')
     })
     .then(function(snapshot) {

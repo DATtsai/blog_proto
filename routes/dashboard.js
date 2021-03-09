@@ -37,7 +37,10 @@ router.get('/', function(req, res) {
             return usersRef.child(req.session.uid).once('value')
         })
         .then(function(snapshot) {
-            let nickname = snapshot.val().nickname;
+            let nickname =  '';
+            if(snapshot.val()) {
+                nickname = snapshot.val().nickname;
+            }
             // console.log(totalViews, publicCount, draftCount)
             res.render('dashboard/admin', { totalViews, articles, publicCount, draftCount, nickname });
         })
