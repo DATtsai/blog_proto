@@ -4,12 +4,6 @@
 const admin = require('firebase-admin');
 require('dotenv').config();
 
-// var serviceAccount = require("../nodeproject-c2763-firebase-adminsdk-8wpdw-0be9f73807");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://nodeproject-c2763-default-rtdb.firebaseio.com"
-// });
-
 // 將私密金鑰.json檔存入環境變數後，再從環境變數中讀出
 // 注意private_key的原值有換行符號，但環境變數不會進行處理，故會造成private_key出錯，使用.replace()取代掉換行符號或是在環境變數中用""將字串包起來
 admin.initializeApp({
